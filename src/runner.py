@@ -1,5 +1,5 @@
 from src.plants.async_plant import AsyncPlant
-from src.plants.controller import Controller
+from src.controller import Controller
 
 
 class Runner:

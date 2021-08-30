@@ -6,8 +6,8 @@ import numpy as np
 from scipy.integrate import odeint
 
 from src.plants.async_plant import AsyncPlant
-from src.plants.controller import PDController
-from src.plants.runner import Runner
+from src.controller import PDController
+from src.runner import Runner
 from src.trajectory import harmonic_trajectory_builder
 
 
