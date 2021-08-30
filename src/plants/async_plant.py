@@ -1,4 +1,4 @@
-from multiprocessing import Value
+from multiprocessing import Value, Array
 
 
 class AsyncPlant:
@@ -7,9 +7,10 @@ class AsyncPlant:
     """
 
     def __init__(self):
-        self.t = None
         self.control_hz = None
         self.u = Value('d', 0.0)
+        self.t = Value('d', 0.0)
+        self.state = Array('d', [...])
         self.process = None
         self.state = None
 
