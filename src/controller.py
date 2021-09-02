@@ -11,6 +11,7 @@ class Controller:
 
 class PDController(Controller):
     def __init__(self, trajectory, kp=2, kd=1):
+        super().__init__()
         self.trajectory = trajectory
         self.kp = kp
         self.kd = kd

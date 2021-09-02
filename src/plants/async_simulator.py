@@ -14,6 +14,7 @@ from src.trajectory import harmonic_trajectory_builder
 class AsyncSimulator(AsyncPlant):
 
     def __init__(self, x0, data_file, t=sys.maxsize, control_hz=100, between_steps=50):
+        super().__init__()
         self.sim_time = t
         self.control_hz = control_hz
         self.between_steps = between_steps
