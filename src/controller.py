@@ -21,3 +21,12 @@ class PDController(Controller):
         theta, dtheta = state
 
         return self.kp * (theta_d - theta) + self.kd * (dtheta_d - dtheta)
+
+
+class ConstantController(Controller):
+    def __init__(self, const=0.0):
+        super().__init__()
+        self.const = const
+
+    def control(self, state, t):
+        return self.const
