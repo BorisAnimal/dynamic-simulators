@@ -10,7 +10,7 @@ class AsyncPlant:
         self.control_hz = None
         self.u = Value('d', 0.0)
         self.t = Value('d', 0.0)
-        self.state = Array('d', [...])
+        self.state = Array('d', [])
         self.process = None
         self.state = None
 
