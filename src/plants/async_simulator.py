@@ -68,7 +68,7 @@ class AsyncSimulator(AsyncPlant):
     def step(self, state, t, u):
         """
         Not depend on Multiprocessing. Could be used for data generation
-        f :: (state_{i}, u_{i}) -> state_{i+1}
+        df :: (state_{i}, u_{i}) -> state_{i+1}
         """
         return odeint(
             self.dynamic, state,
