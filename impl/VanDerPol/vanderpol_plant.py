@@ -16,7 +16,10 @@ class VanderpolDynamic:
         [x1, x2] = state
         dx1 = self.b1 * x2
         dx2 = self.a2 * x1 + self.b2 * x2 + self.c2 * x1 ** 2 * x2 - u
-        return dx1, dx2
+        return np.array([
+            dx1,
+            dx2,
+        ])
 
 
 class VanderpolAsyncPlant(AsyncSimulator):
