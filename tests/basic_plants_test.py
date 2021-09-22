@@ -1,7 +1,7 @@
 import numpy as np
 
 from impl.pendulum_plant import PendulumAsyncPlant
-from src.controller import SquareWaveController, PDController
+from src.controller import SquareWaveController, PDController, ConstantController
 from src.plants.async_discrete_simulator import DiscreteAsyncSimulator
 from src.plants.sync_plant import simulator
 from src.trajectory import harmonic_trajectory_builder
@@ -29,12 +29,12 @@ class TestPlants(BaseTest):
         self.async_plant_check(plant, controller, [0, 0])
 
     def test_sync_plant(self):
-        control = lambda state, *args: 0.2
         dynamic = lambda x, t, u, params: [
             x[1],
             (u - params['b'] * x[1] - params['m'] * params['g'] * params['l'] * np.sin(
                 x[0])) / (params['m'] * params['l'] ** 2)
         ]
+        control = ConstantController(0.2).control
         sys_params = {
             'm': 1,
             'g': 9.81,
@@ -42,7 +42,7 @@ class TestPlants(BaseTest):
             'b': 0.1,
         }
 
-        x = simulator(control, dynamic, [0, 0], sys_params, t=t, between_steps=bs, control_hz=chz)
+        x = simulator(dynamic, control, [0, 0], sys_params, t=t, between_steps=bs, control_hz=chz)
         self.assertEqual(x.shape, (N, 2))
 
 
