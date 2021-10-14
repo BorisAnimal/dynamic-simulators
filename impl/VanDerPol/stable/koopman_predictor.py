@@ -7,12 +7,11 @@ from impl.utils.lift import lift
 from src.controller import SquareWaveController
 from src.plants.async_discrete_simulator import DiscreteAsyncSimulator
 from src.runner import Runner
-from vanderpol_plant import VanderpolAsyncPlant
+from ..vanderpol_plant import VanderpolAsyncPlant, VanderpolDynamic
 
 if __name__ == '__main__':
     # Collect data
-    X, Y, U = generate_data(dof=2, Nsteps=400, Nsim=1000)
-    U *= 0.001
+    X, Y, U = generate_data(VanderpolDynamic(stable_zero=True), dof=2, Nsteps=400, Nsim=1000)
 
     print("Data shapes:")
     print("X:", X.shape)

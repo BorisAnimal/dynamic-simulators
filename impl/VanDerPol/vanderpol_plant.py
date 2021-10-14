@@ -6,7 +6,8 @@ from src.runner import Runner
 
 
 class VanderpolDynamic:
-    def __init__(self, **kwargs):
+    def __init__(self, stable_zero=False, **kwargs):
+        self.dsign = -1 if stable_zero else 1
         self.b1 = kwargs.get("b1", 2.0)
         self.a2 = kwargs.get("a2", -0.8)
         self.b2 = kwargs.get("b2", 2.0)
@@ -15,11 +16,24 @@ class VanderpolDynamic:
     def __call__(self, state, t, u):
         [x1, x2] = state
         dx1 = self.b1 * x2
-        dx2 = self.a2 * x1 + self.b2 * x2 + self.c2 * x1 ** 2 * x2 - u
+        dx2 = self.a2 * x1 + self.b2 * x2 + self.dsign * self.c2 * x1 ** 2 * x2 - u
         return np.array([
             dx1,
             dx2,
         ])
+
+    def vdp_lin(self, x0):
+        f = VanderpolDynamic()
+        x1, x2 = np.array(x0).flatten()
+        A = np.array(
+            [
+                [0, 2],
+                [self.dsign * 20 * x1 * x2 - 0.8, 2 + self.dsign * 10 * x1 ** 2],
+            ]
+        )
+        B = np.array([[0], [1]])
+        u_comp = np.linalg.pinv(B).dot(f(x0, t=0, u=0.0)).flatten()[0]
+        return A, B, u_comp
 
 
 class VanderpolAsyncPlant(AsyncSimulator):
