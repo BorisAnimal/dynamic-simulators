@@ -1,70 +1,25 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from impl.utils.fit_koopman_matrices import fit_koopman_matrices
+from impl.utils.generate_data import generate_data
 from impl.utils.lift import lift
-from impl.utils.rk import rk
 from src.controller import SquareWaveController
 from src.plants.async_discrete_simulator import DiscreteAsyncSimulator
 from src.runner import Runner
-from vanderpol_plant import VanderpolAsyncPlant, VanderpolDynamic
-
-
-# def df(t, x, u):
-#     x1, x2 = x
-#     return np.array([
-#         2 * x2,
-#         2 * x2 - 0.8 * x1 - 10 * x1 ** 2 * x2 - u
-#     ])
-
-
-def generate_data(dof, Nsteps, Nsim):
-    """
-    # Nsim # количество симуляций
-    # Nsteps # количество шагов внутри симуляции
-    """
-    Ubig = np.random.rand(Nsteps, Nsim) * 2 - 1
-    Xcurrent = np.random.rand(dof, Nsim) * 2 - 1
-    df = VanderpolDynamic()
-    X, Y, U = [], [], []
-    for i in range(Nsteps):
-        Xnext = rk(df, 0, Xcurrent, Ubig[i, :])
-        X.append(Xcurrent)
-        Y.append(Xnext)
-        U.append(Ubig[i, :])
-        Xcurrent = Xnext
-
-    X = np.hstack(X)
-    Y = np.hstack(Y)
-    U = np.hstack(U).reshape((1, -1))
-    return X, Y, U
-
+from vanderpol_plant import VanderpolAsyncPlant
 
 if __name__ == '__main__':
     # Collect data
     X, Y, U = generate_data(dof=2, Nsteps=400, Nsim=1000)
+    U *= 0.001
 
     print("Data shapes:")
     print("X:", X.shape)
     print("Y:", Y.shape)
     print("U:", U.shape)
 
-    # Lift data
-    Xlift = lift(X)
-    Ylift = lift(Y)
-    Nlift = Xlift.shape[0]
-
-    print("X lifted:", Xlift.shape)
-    print("Y lifted:", Ylift.shape)
-
-    # Predictor matrices computing
-    W = np.vstack([Ylift, X])
-    V = np.vstack([Xlift, U])
-    VVt = V.dot(V.T)
-    WVt = W.dot(V.T)
-    M = WVt.dot(np.linalg.pinv(VVt))
-    Alift = M[:Nlift, :Nlift]
-    Blift = M[:Nlift, Nlift:]
-    Clift = M[Nlift:, :Nlift]
+    Alift, Blift, Clift = fit_koopman_matrices(X, Y, U, lift)
 
     # Predictor comparison
     Tmax = 3

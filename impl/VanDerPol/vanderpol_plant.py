@@ -10,7 +10,7 @@ class VanderpolDynamic:
         self.b1 = kwargs.get("b1", 2.0)
         self.a2 = kwargs.get("a2", -0.8)
         self.b2 = kwargs.get("b2", 2.0)
-        self.c2 = kwargs.get("c2", -10)
+        self.c2 = kwargs.get("c2", 10)
 
     def __call__(self, state, t, u):
         [x1, x2] = state
