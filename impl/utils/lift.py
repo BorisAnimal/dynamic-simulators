@@ -19,7 +19,7 @@ def _rbf(x, N_rbf=100):
         _rbf :: D*N -> N_rbf*N
     """
     x = np.array(x)
-    Cbig = np.random.RandomState(42).rand(N_rbf, x.shape[0])
+    Cbig = np.random.RandomState(123).rand(N_rbf, x.shape[0])
     Y = []
     for i in range(N_rbf):
         C = Cbig[i].reshape(-1, 1)

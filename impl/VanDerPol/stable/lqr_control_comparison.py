@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from impl.VanDerPol.vanderpol_plant import VanderpolDynamic, VanderpolAsyncPlant
 from impl.utils.fit_koopman_matrices import fit_koopman_matrices
 from impl.utils.generate_data import generate_data
 from impl.utils.lift import lift
 from src.controller import LQR
 from src.plants.async_discrete_simulator import DiscreteAsyncSimulator
 from src.runner import Runner
-from ..vanderpol_plant import VanderpolAsyncPlant, VanderpolDynamic
 
 """
 TODO:
