@@ -74,8 +74,9 @@ if __name__ == '__main__':
     u = fields['us']
     # Plot data
     t = lambda x: np.linspace(0, plant.t.value, len(x))
-    plt.plot(t(x1), x1, label='x1')
-    plt.plot(t(x2), x2, label='x2')
+    plt.plot(t(x1), x1, label='q1')
+    plt.plot(t(x2), x2, label='q2')
+    plt.grid()
     # plt.plot(t(u), u)
     plt.legend()
     plt.show()

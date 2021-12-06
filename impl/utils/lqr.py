@@ -2,7 +2,7 @@ import numpy as np
 from scipy.linalg import solve_continuous_are as are
 from scipy.linalg import solve_discrete_are as are_disc
 
-
+# https://colab.research.google.com/drive/1_MjEdyWbJ2In3NZRfdrmKUPdR0IobKH-#scrollTo=Z622gBBBxQzt
 def lqr(A, B, Q, R, discr=False):
     # Solve the ARE
     if discr:
